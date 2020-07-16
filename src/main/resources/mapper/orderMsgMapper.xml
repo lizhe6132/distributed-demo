@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizhe.distributeddemo.mapper.OrderMsgMapper">
+    <resultMap id="baseMap" type="com.lizhe.distributeddemo.vo.OrderMsg">
+        <id property="id" column="id"/>
+        <result property="uniqueId" column="unique_id"/>
+        <result property="msgContent" column="msg_content"/>
+        <result property="msgStatus" column="msg_status"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <insert id="saveMsg" parameterType="com.lizhe.distributeddemo.vo.OrderMsg">
+        INSERT INTO order_msg
+        (`unique_id`, `msg_content`, `msg_status`, `create_time`)
+        VALUES
+        (#{uniqueId}, #{msgContent}, #{msgStatus}, NOW());
+    </insert>
+    <select id="getOne" resultMap="baseMap">
+        SELECT  * FROM order_msg WHERE unique_id = #{uniqueId}
+    </select>
+</mapper>

@@ -13,7 +13,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void saveOrder(Order order) {
-
+        orderMapper.saveOrder(order);
     }
 
     @Override

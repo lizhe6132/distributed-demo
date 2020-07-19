@@ -3,8 +3,6 @@ package com.lizhe.distributeddemo.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.lizhe.distributeddemo.dynamicdatasource.DynamicDataSource;
-import com.lizhe.distributeddemo.dynamicdatasource.DynamicDataSourceContextHolder;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -46,48 +44,10 @@ public class DruidConfig {
     //如果你的配置文件不在默认文件中。
     //需要在类中引入配置文件例如：@PropertySource(value = "classpath:druid.properties")
     @Bean(destroyMethod = "close",initMethod = "init")
-    public DataSource getDs1(){
+    public DataSource dataSource(){
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setDriverClassName(driverClassName);
         druidDataSource.setUrl(jdbcUrl);
-        druidDataSource.setUsername(jdbcname);
-        druidDataSource.setPassword(jdbcpass);
-        druidDataSource.setMaxActive(maxActive);
-        druidDataSource.setInitialSize(initialSize);
-        druidDataSource.setTimeBetweenConnectErrorMillis(timeBetweenEvictionRunsMillis);
-        druidDataSource.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
-        druidDataSource.setValidationQuery(validationQuery);
-        druidDataSource.setTestWhileIdle(testWhileIdle);
-        druidDataSource.setTestOnBorrow(testOnBorrow);
-        druidDataSource.setTestOnReturn(testOnReturn);
-        druidDataSource.setPoolPreparedStatements(poolPreparedStatements);
-        druidDataSource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
-
-        try {
-            druidDataSource.setFilters(filters);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return druidDataSource;
-    }
-    //@Bean
-    public DataSource dynamicDataSource() {
-        Map<Object, Object> targetDataSources = new HashMap<>();
-        DataSource ds1 = getDs1();
-        targetDataSources.put("ds1", ds1);
-        targetDataSources.put("ds2", getDs2());
-        DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        dynamicDataSource.setTargetDataSources(targetDataSources);
-        dynamicDataSource.setDefaultTargetDataSource(ds1);
-        DynamicDataSourceContextHolder.dataSourceIds.add("ds1");
-        DynamicDataSourceContextHolder.dataSourceIds.add("ds2");
-        return dynamicDataSource;
-    }
-    //@Bean(destroyMethod = "close",initMethod = "init")
-    public DataSource getDs2(){
-        DruidDataSource druidDataSource = new DruidDataSource();
-        druidDataSource.setDriverClassName(driverClassName);
-        druidDataSource.setUrl(jdbcUrl2);
         druidDataSource.setUsername(jdbcname);
         druidDataSource.setPassword(jdbcpass);
         druidDataSource.setMaxActive(maxActive);
